@@ -669,3 +669,72 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
   h1, h2, h3, .transition-brand { overflow-wrap: break-word; }
   .quote-contact > a, .quote-contact > span, .footer-contact a, .footer-contact span { min-width: 0; overflow-wrap: anywhere; }
 }
+
+/* ==========================================================================
+   CONTENT + SIGNATURE POLISH — service specificity, per-service steps,
+   "Start with the problem" pipe route. Additive; hero/header/footer untouched.
+   ========================================================================== */
+
+/* Services: micro-label is clearly secondary and scans quickly. */
+.service-tag { line-height: 1.5; }
+.featured-service-desc { margin-top: 22px; max-width: 320px; font-size: 15px; line-height: 1.7; color: #dfe5e6; }
+.service-row .service-tag { margin-bottom: 6px; }
+.service-row .service-details { margin-top: 8px; }
+
+/* Process steps: Start / Assess / Next step read as three different moments. */
+.process-item ol li:first-child > span { border-color: var(--action); color: var(--action); }
+.process-item ol li:last-child > span { background: var(--primary); border-color: var(--primary); color: var(--primary-foreground); }
+.process-item ol li:last-child .step-label { color: var(--foreground); }
+.process-item ol li:nth-child(2) .step-label { color: var(--muted-foreground); }
+
+/* Signature section: abstract pipe route, purely graphic. */
+.signature-section { padding-block: 96px; border-top: 1px solid var(--border); background: var(--background); }
+.signature-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); grid-template-areas: "copy route" "cta route"; column-gap: 96px; align-content: center; }
+.signature-copy { grid-area: copy; align-self: end; min-width: 0; }
+.signature-copy h2 { max-width: 560px; font-size: clamp(40px, 4.6vw, 64px); line-height: 1.04; letter-spacing: -2.6px; }
+.signature-copy > p:not(.eyebrow) { margin-top: 24px; max-width: 480px; font-size: 16px; line-height: 1.8; color: var(--muted-foreground); }
+.signature-cta { grid-area: cta; align-self: start; margin-top: 34px; }
+.signature-cta a svg { transition: transform .18s ease; }
+.signature-cta a:hover svg { transform: translate(2px, -2px); }
+
+.pipe-route { grid-area: route; position: relative; justify-self: end; align-self: center; width: min(100%, 460px); min-width: 0; padding-block: 4px; }
+.pipe-route::before { content: ""; position: absolute; left: 4px; top: 22px; bottom: 22px; width: 1px; background: var(--action); transform-origin: top; }
+.pipe-node { position: relative; display: flex; align-items: center; gap: 14px; min-width: 0; padding: 14px 0 14px 32px; }
+.pipe-node::before { content: ""; position: absolute; left: 0; top: 50%; width: 9px; height: 9px; margin-top: -4.5px; border: 1px solid var(--action); border-radius: 50%; background: var(--background); }
+.pipe-boiler::before, .pipe-end::before { background: var(--action); }
+.pipe-label { min-width: 0; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--foreground); overflow-wrap: anywhere; }
+.pipe-leader { flex: 1 1 24px; min-width: 24px; height: 0; border-top: 1px solid var(--border); }
+.pipe-index { flex-shrink: 0; font-size: 11px; font-weight: 700; letter-spacing: .12em; color: var(--action); }
+.pipe-branches { list-style: none; margin: 0; padding: 0; }
+.pipe-branch { padding-left: 52px; }
+.pipe-branch::before { left: 18px; width: 7px; height: 7px; margin-top: -3.5px; border-radius: 0; transform: rotate(45deg); }
+.pipe-branch::after { content: ""; position: absolute; left: 4px; top: 50%; width: 14px; border-top: 1px solid var(--action); }
+.pipe-branch .pipe-label { font-weight: 600; color: var(--muted-foreground); }
+.pipe-start .pipe-label, .pipe-end .pipe-label { color: var(--muted-foreground); }
+.pipe-end .pipe-label { color: var(--foreground); }
+
+/* One subtle drawing-in of the trunk line, only where scroll-driven animation exists. */
+@supports (animation-timeline: view()) {
+  .pipe-route::before { animation: pipe-draw linear both; animation-timeline: view(); animation-range: entry 5% cover 40%; }
+  @keyframes pipe-draw { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+}
+
+@media (max-width: 1000px) {
+  .signature-grid { column-gap: 48px; }
+}
+@media (max-width: 820px) {
+  .signature-section { padding-block: 56px; }
+  .signature-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "copy" "route" "cta"; column-gap: 0; }
+  .signature-copy h2 { font-size: 38px; letter-spacing: -1.6px; }
+  .signature-copy > p:not(.eyebrow) { font-size: 15px; margin-top: 20px; }
+  .pipe-route { justify-self: stretch; width: 100%; margin-top: 30px; }
+  .signature-cta { margin-top: 30px; }
+  .signature-cta a { max-width: 100%; }
+  .service-row .service-tag { letter-spacing: .08em; }
+  .featured-service-desc { max-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signature-cta a:hover svg { transform: none; }
+  .pipe-route::before { animation: none !important; transform: none; }
+}

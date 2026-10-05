@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { ArrowUpRight, Droplets, Flame, Gauge, MapPin, Phone, Thermometer, type LucideIcon } from "lucide-react"
+import { ArrowDown, ArrowUpRight, Droplets, Flame, Gauge, MapPin, Phone, Thermometer, type LucideIcon } from "lucide-react"
 import { buttonVariants } from "@/components/ui/button"
 import { SingleOpenAccordion } from "@/components/single-open-accordion"
 import { SITE, serviceHref, type ServiceOption } from "@/lib/site"
@@ -27,41 +27,38 @@ export function Hero() {
 }
 
 const services: { number: string; icon: LucideIcon; label: string; title: string; id: string; details: string; href: string }[] = [
-  { number: "02", icon: Thermometer, label: "Heating", title: "Central Heating", id: "central-heating-card", details: "Central heating · Radiator repairs · Power flushing", href: "#central-heating" },
-  { number: "03", icon: Droplets, label: "Plumbing", title: "Plumbing", id: "plumbing-card", details: "Bathroom plumbing · Blocked drains, sinks & toilets · Dripping taps", href: "#plumbing" },
-  { number: "04", icon: Flame, label: "Gas", title: "Gas Appliances", id: "gas-appliances", details: "Gas cooker installation & repairs · Gas fires", href: serviceHref("Gas cooker installation/repairs") },
+  { number: "02", icon: Thermometer, label: "Central heating · Radiators · Power flushing", title: "Heating", id: "central-heating-card", details: "Central heating, radiator repairs and power flushing.", href: "#central-heating" },
+  { number: "03", icon: Droplets, label: "Drains · Sinks · Toilets · Taps", title: "Plumbing", id: "plumbing-card", details: "Blocked drains, sinks, toilets, dripping taps and bathroom plumbing.", href: "#plumbing" },
+  { number: "04", icon: Flame, label: "Cookers · Gas fires", title: "Gas appliances", id: "gas-appliances", details: "Gas cooker installation and repairs, plus gas fires.", href: serviceHref("Gas cooker installation/repairs") },
 ]
 
-const serviceGroups: { number: string; icon: LucideIcon; title: string; covers: string }[] = [
-  { number: "01", icon: Gauge, title: "Boilers", covers: "Servicing, repairs, installation and replacement." },
-  { number: "02", icon: Thermometer, title: "Heating", covers: "Central heating, radiators and power flushing." },
-  { number: "03", icon: Droplets, title: "Plumbing", covers: "Drains, sinks, toilets, taps and bathroom plumbing." },
-  { number: "04", icon: Flame, title: "Gas appliances", covers: "Gas cookers and gas fires." },
-]
+/** Each service gets its own three-step route; the labels (Start / Assess / Next step) stay constant. */
+const stepLabels = ["Start", "Assess", "Next step"] as const
 
-const expectSteps = [
-  { label: "Understand", title: "Understand the issue", text: "Tell us what is happening or what you need." },
-  { label: "Assess", title: "Assess what is required", text: "The work depends on the issue, appliance or heating system." },
-  { label: "Discuss", title: "Discuss the appropriate next step", text: "Talk through the sensible way forward." },
+const serviceGroups: { number: string; title: string; covers: string; steps: [string, string, string] }[] = [
+  { number: "01", title: "Boilers", covers: "Servicing, repairs, installation and replacement.", steps: ["Tell us what the boiler is doing.", "Describe the service or issue.", "Discuss the appropriate next step."] },
+  { number: "02", title: "Heating", covers: "Central heating, radiators and power flushing.", steps: ["Tell us where the heating problem is.", "Identify whether it\u2019s central heating, radiators or power flushing.", "Discuss the appropriate next step."] },
+  { number: "03", title: "Plumbing", covers: "Drains, sinks, toilets, taps and bathroom plumbing.", steps: ["Tell us what needs attention.", "Describe the blocked drain, sink, toilet, tap or bathroom issue.", "Discuss the appropriate repair or next step."] },
+  { number: "04", title: "Gas appliances", covers: "Gas cookers and gas fires.", steps: ["Tell us about the appliance.", "Describe the issue or service required.", "Discuss the appropriate next step."] },
 ]
 
 export function Services() {
   return <section className="section services-section" id="services"><div className="container">
     <div className="section-heading"><div><p className="eyebrow">Services <span className="service-route" aria-hidden="true" /></p><h2>Plumbing, heating, boilers &amp; gas services.</h2></div><p>Choose the area you need help with, then contact Power Plus Heating to discuss the work.</p></div>
     <div className="services-grid">
-      <a className="featured-service" href="#boilers" id="boilers-card"><div className="featured-service-top"><span>01</span><Gauge size={22} strokeWidth={1.5} aria-hidden="true" /></div><div><p className="service-tag">Servicing · Repairs · Installation</p><h3>Boilers</h3><ul><li>Boiler servicing</li><li>Boiler repairs</li><li>Installation &amp; replacement</li></ul></div><span className="featured-service-link">Boiler services<ArrowUpRight size={22} aria-hidden="true" /></span></a>
+      <a className="featured-service" href="#boilers" id="boilers-card"><div className="featured-service-top"><span>01</span><Gauge size={22} strokeWidth={1.5} aria-hidden="true" /></div><div><p className="service-tag">Servicing · Repairs · Installation</p><h3>Boilers</h3><p className="featured-service-desc">Boiler servicing, repairs and installation or replacement.</p></div><span className="featured-service-link">Boiler services<ArrowUpRight size={22} aria-hidden="true" /></span></a>
       <div className="service-list">{services.map(({ number, icon: Icon, label, title, id, details, href }) => <a href={href} className="service-row" id={id} key={id}><span className="service-number">{number}</span><Icon className="service-icon" size={26} strokeWidth={1.5} aria-hidden="true" /><div><span className="service-tag">{label}</span><h3>{title}</h3><span className="service-details">{details}</span></div><ArrowUpRight className="service-arrow" size={23} aria-hidden="true" /></a>)}</div>
     </div>
     <section className="service-process" aria-labelledby="what-to-expect-title">
       <div className="service-process-heading">
-        <div><p className="eyebrow">Service approach</p><h3 id="what-to-expect-title">What to expect</h3></div>
-        <p>What happens when you get in touch. This is a general guide; the exact work depends on the issue, appliance or heating system.</p>
+        <div><p className="eyebrow">What happens next</p><h3 id="what-to-expect-title">A simple way to start.</h3></div>
+        <p>Tell us what you need help with, and we&rsquo;ll discuss the appropriate next step.</p>
       </div>
       <SingleOpenAccordion className="service-process-grid">
-        {serviceGroups.map(({ number, title, covers }) => <details className="process-item" key={title}>
+        {serviceGroups.map(({ number, title, covers, steps }) => <details className="process-item" key={title}>
           <summary><span className="process-number">{number}</span><span className="process-title">{title}</span><span className="process-toggle" aria-hidden="true" /></summary>
           <p className="process-covers">{covers}</p>
-          <ol>{expectSteps.map((step, index) => <li key={step.title}><span>{String(index + 1).padStart(2, "0")}</span><p><em className="step-label">{step.label}</em><strong>{step.title}</strong>{step.text}</p></li>)}</ol>
+          <ol>{steps.map((text, index) => <li key={stepLabels[index]}><span>{String(index + 1).padStart(2, "0")}</span><p><em className="step-label">{stepLabels[index]}</em>{text}</p></li>)}</ol>
         </details>)}
       </SingleOpenAccordion>
     </section>
@@ -85,6 +82,21 @@ export function PlumbingSection() {
   return <section className="section plumbing-section" id="plumbing"><div className="container plumbing-grid"><div><p className="eyebrow">Plumbing</p><h2>Blocked drains, dripping taps &amp; plumbing repairs</h2><p>Everyday plumbing help for common household problems, including bathroom plumbing and blockages.</p></div><div className="problems-grid">{problems.map((title) => <a href={serviceHref(title)} className="problem-link" key={title}><span>{title}</span><ArrowUpRight size={20} aria-hidden="true" /></a>)}</div></div></section>
 }
 
+export function ProblemRoute() {
+  const branches = [{ number: "02", label: "Heating" }, { number: "03", label: "Plumbing" }, { number: "04", label: "Gas appliances" }]
+  return <section className="signature-section" id="start" aria-labelledby="signature-title"><div className="container signature-grid">
+    <div className="signature-copy"><p className="eyebrow"><span className="accent-line" />Start with the problem</p><h2 id="signature-title">Tell us what&rsquo;s going wrong.</h2><p>Boiler issue, heating problem, blocked drain or everyday plumbing repair &mdash; tell us what you need help with and we&rsquo;ll discuss the appropriate next step.</p></div>
+    {/* Purely graphic: an abstract route through the service areas. It states no technical relationship, size or rating. */}
+    <div className="pipe-route" aria-hidden="true">
+      <div className="pipe-node pipe-start"><span className="pipe-label">Start</span><i className="pipe-leader" /><span className="pipe-index">00</span></div>
+      <div className="pipe-node pipe-boiler"><span className="pipe-label">Boilers</span><i className="pipe-leader" /><span className="pipe-index">01</span></div>
+      <ul className="pipe-branches">{branches.map(({ number, label }) => <li className="pipe-node pipe-branch" key={label}><span className="pipe-label">{label}</span><i className="pipe-leader" /><span className="pipe-index">{number}</span></li>)}</ul>
+      <div className="pipe-node pipe-end"><span className="pipe-label">Request a quote</span><i className="pipe-leader" /><ArrowDown className="pipe-index" size={15} strokeWidth={1.5} /></div>
+    </div>
+    <div className="signature-cta"><a href="#contact" className={buttonVariants({ variant: "warm", size: "cta" })}>Request a Quote<ArrowUpRight data-icon="inline-end" /></a></div>
+  </div></section>
+}
+
 export function AboutSection() {
-  return <section className="about-section" id="about"><div className="container about-grid"><div><p className="eyebrow"><MapPin size={16} aria-hidden="true" />About &amp; location</p><h2>About Power Plus Heating Ltd</h2></div><div className="about-copy"><p className="about-intro">Based in Birmingham.</p><p>Power Plus Heating Ltd provides plumbing, heating, boiler and gas-related services. Contact us to check availability in your area.</p><a href={SITE.phoneHref} className="text-link"><Phone size={17} aria-hidden="true" />{SITE.phoneDisplay}</a></div></div></section>
+  return <section className="about-section" id="about"><div className="container about-grid"><div><p className="eyebrow"><MapPin size={16} aria-hidden="true" />About Power Plus Heating Ltd</p><h2>Plumbing, heating, boilers and gas-related services.</h2></div><div className="about-copy"><p className="about-intro">Based in Birmingham, Power Plus Heating Ltd provides services across plumbing, heating, boilers and gas-related appliances.</p><p>Contact the business to check availability in your area.</p><a href={SITE.phoneHref} className="text-link"><Phone size={17} aria-hidden="true" />{SITE.phoneDisplay}</a></div></div></section>
 }
