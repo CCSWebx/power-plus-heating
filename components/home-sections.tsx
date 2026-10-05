@@ -1,6 +1,7 @@
 import Image from "next/image"
 import { ArrowUpRight, Droplets, Flame, Gauge, MapPin, Phone, Thermometer, type LucideIcon } from "lucide-react"
 import { buttonVariants } from "@/components/ui/button"
+import { SingleOpenAccordion } from "@/components/single-open-accordion"
 import { SITE, serviceHref, type ServiceOption } from "@/lib/site"
 
 export function Hero() {
@@ -56,13 +57,13 @@ export function Services() {
         <div><p className="eyebrow">Service approach</p><h3 id="what-to-expect-title">What to expect</h3></div>
         <p>What happens when you get in touch. This is a general guide; the exact work depends on the issue, appliance or heating system.</p>
       </div>
-      <div className="service-process-grid">
+      <SingleOpenAccordion className="service-process-grid">
         {serviceGroups.map(({ number, title, covers }) => <details className="process-item" key={title}>
           <summary><span className="process-number">{number}</span><span className="process-title">{title}</span><span className="process-toggle" aria-hidden="true" /></summary>
           <p className="process-covers">{covers}</p>
           <ol>{expectSteps.map((step, index) => <li key={step.title}><span>{String(index + 1).padStart(2, "0")}</span><p><em className="step-label">{step.label}</em><strong>{step.title}</strong>{step.text}</p></li>)}</ol>
         </details>)}
-      </div>
+      </SingleOpenAccordion>
     </section>
   </div></section>
 }

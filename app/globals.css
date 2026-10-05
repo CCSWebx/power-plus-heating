@@ -634,3 +634,38 @@ a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-v
 @media (prefers-reduced-motion: reduce) {
   .service-row:hover .service-icon, .heating-list li:hover { transform: none; padding-left: 0; }
 }
+
+/* ==========================================================================
+   MOBILE RESPONSIVE FIX (<= 820px). Desktop and tablet rules are untouched.
+   Kept last on purpose: the "art-direction" pass above re-declared
+   .services-grid with minmax(250px, …) AFTER the mobile collapse, so on phones
+   the two-column desktop track survived and pushed the service rows off-screen.
+   ========================================================================== */
+@media (max-width: 820px) {
+  html { scroll-padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+
+  /* Single column everywhere; minmax(0, 1fr) stops long words forcing a wider track. */
+  .hero-grid, .services-grid, .boiler-grid, .plumbing-grid, .about-grid, .quote-grid { grid-template-columns: minmax(0, 1fr); }
+  .services-grid { gap: 26px; }
+  .featured-service, .service-list, .hero-copy, .boiler-copy, .boiler-figure { min-width: 0; }
+
+  /* Service rows: keep the numbering, icon and arrow, but stack them in a fluid grid. */
+  .service-row { display: grid; grid-template-columns: 24px minmax(0, 1fr) 22px; grid-template-rows: auto auto; column-gap: 14px; align-items: center; }
+  .service-row .service-number { display: block; grid-column: 2; grid-row: 1; align-self: end; margin-bottom: 6px; min-width: 0; }
+  .service-row .service-icon { grid-column: 1; grid-row: 1 / span 2; align-self: start; margin-top: 2px; }
+  .service-row > div { grid-column: 2; grid-row: 2; }
+  .service-row .service-arrow { grid-column: 3; grid-row: 1 / span 2; margin-left: 0; width: 22px; height: 22px; }
+  .service-details { max-width: none; overflow-wrap: anywhere; }
+
+  /* Eyebrow: the arrow tip of .route-mark sits 13px past the line, more than the flex gap,
+     so it touched the first letter. Add clearance, align the line to the first text line
+     (so it stays put if the label wraps) and darken the label slightly. */
+  .eyebrow { align-items: flex-start; color: #566064; }
+  .eyebrow > .accent-line { flex-shrink: 0; margin-top: .8em; margin-right: 12px; }
+  .eyebrow > .service-route { margin-top: .45em; }
+  .hero-copy .eyebrow { letter-spacing: .9px; }
+
+  /* Long unbroken strings must wrap instead of widening the page. */
+  h1, h2, h3, .transition-brand { overflow-wrap: break-word; }
+  .quote-contact > a, .quote-contact > span, .footer-contact a, .footer-contact span { min-width: 0; overflow-wrap: anywhere; }
+}
