@@ -49,6 +49,26 @@ function FieldError({ id, message }: { id: string; message?: string }) {
   return <p id={id} className="field-error"><span className="sr-only">Error: </span>{message}</p>
 }
 
+/**
+ * Backend seam. Today an enquiry becomes a mailto: draft in the visitor's own
+ * email app. To connect a real backend later, replace this and the result panel
+ * with a POST to an API route; the form, validation and fields stay as they are.
+ */
+function buildMailtoHref(values: Record<FieldName, string>, method: ContactMethod): string {
+  const body = [
+    "Quote enquiry",
+    "",
+    `Name: ${values.name}`,
+    `Phone: ${values.phone}`,
+    `Email: ${values.email || "Not provided"}`,
+    `Service: ${values.service}`,
+    `Preferred contact: ${method}`,
+    "",
+    values.description,
+  ].join("\n")
+  return `mailto:${SITE.enquiryEmail}?subject=${encodeURIComponent(`Quote enquiry: ${values.service}`)}&body=${encodeURIComponent(body)}`
+}
+
 export function QuoteSection() {
   const [draft, setDraft] = useState<Draft | null>(null)
   const [contactMethod, setContactMethod] = useState<ContactMethod>("Phone")
@@ -78,18 +98,7 @@ export function QuoteSection() {
 
     const found = validate(values, method)
     if (Object.keys(found).length === 0) {
-      const body = [
-        "Quote enquiry",
-        "",
-        `Name: ${values.name}`,
-        `Phone: ${values.phone}`,
-        `Email: ${values.email || "Not provided"}`,
-        `Service: ${values.service}`,
-        `Preferred contact: ${method}`,
-        "",
-        values.description,
-      ].join("\n")
-      const mailtoHref = `mailto:${SITE.enquiryEmail}?subject=${encodeURIComponent(`Quote enquiry: ${values.service}`)}&body=${encodeURIComponent(body)}`
+      const mailtoHref = buildMailtoHref(values, method)
       if (mailtoHref.length > MAILTO_MAX_LENGTH) {
         found.description = "This is too long to open reliably in an email app. Please shorten your description."
       } else {
@@ -153,7 +162,6 @@ export function QuoteSection() {
         }}
         onKeyDown={e => { if (e.key === "Enter" && e.nativeEvent.isComposing) e.preventDefault() }}
       >
-        <div className="demo-notice" role="note">Demo form — prepares an email draft; nothing is sent.</div>
         <div className="form-heading"><h3>A little about your enquiry</h3><span>Fields marked * are required</span></div>
         <FieldGroup className="quote-fields">
           <p className="form-group-label form-full" aria-hidden="true"><span>A</span>Your details</p>
@@ -194,8 +202,8 @@ export function QuoteSection() {
             </NativeSelect>
           </Field>
           <Field className="form-full">
-            <Button variant="warm" size="cta" type="submit">Prepare email enquiry<ArrowUpRight data-icon="inline-end" aria-hidden="true" /></Button>
-            <p className="form-disclaimer">Nothing is sent or stored by this form. <Link href="/privacy">Privacy</Link></p>
+            <Button variant="warm" size="cta" type="submit">Request a Quote<ArrowUpRight data-icon="inline-end" aria-hidden="true" /></Button>
+            <p className="form-disclaimer" role="note">Website concept: this enquiry form is shown for demonstration. It prepares an email draft; nothing is sent or stored. <Link href="/privacy">Privacy</Link></p>
           </Field>
         </FieldGroup>
       </form>

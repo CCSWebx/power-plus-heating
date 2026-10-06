@@ -13,10 +13,8 @@ export const SITE = {
 
 export const navigation = [
   { label: "Services", id: "services" },
-  { label: "Boilers", id: "boilers" },
-  { label: "Central Heating", id: "central-heating" },
-  { label: "Plumbing", id: "plumbing" },
   { label: "About", id: "about" },
+  { label: "Areas We Cover", id: "areas" },
   { label: "Contact", id: "contact" },
 ] as const
 

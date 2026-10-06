@@ -40,7 +40,7 @@ export function SiteHeader() {
           {navigation.map(({ label, id }) => <Link key={id} href={`/#${id}`}>{label}</Link>)}
         </nav>
         <div className="header-actions">
-          <a className="header-phone" href={SITE.phoneHref}><Phone size={16} aria-hidden="true" /><span>{SITE.phoneDisplay}</span></a>
+          <a className="header-phone" href={SITE.phoneHref}><Phone size={16} aria-hidden="true" /><span>Call {SITE.phoneDisplay}</span></a>
           <Link className={buttonVariants({ variant: "warm", size: "lg" })} href="/#contact">Request a Quote <ArrowUpRight data-icon="inline-end" aria-hidden="true" /></Link>
         </div>
         <div className="mobile-header-actions">
